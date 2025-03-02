@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Education Portal",
   "main": "app.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "start": "nodemon app.js"
   },
@@ -15,6 +15,7 @@
   "author": "Caner Oren",
   "license": "ISC",
   "dependencies": {
+    "ejs": "^3.1.10",
     "express": "^4.21.2"
   },
   "devDependencies": {
