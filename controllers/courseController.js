@@ -110,9 +110,13 @@ const releaseCourse = async (req,res)=>{
 
 const deleteCourse = async (req,res) =>{
   try{
-    console.log(`ANANIN AMI ${req.params.slug}`);
+    
     const course=await Course.findOneAndDelete({slug:req.params.slug});
-    course.deleteOne();
+    const usersToUpdate= await User.find({courses:course._id});
+    for (let user of usersToUpdate){
+      user.courses.pull(course._id);
+      await user.save();
+    };
     req.flash("error",`${course.name} has been deleted successfully`);
 
     res.status(200).redirect('/users/dashboard');
@@ -122,4 +126,23 @@ const deleteCourse = async (req,res) =>{
   };
 };
 
-export default {createCourse,getAllCourses,getCourse,enrollCourse,releaseCourse,deleteCourse};
+const updateCourse = async (req,res) =>{
+  try{
+    const course= await Course.findOne({slug:req.params.slug});
+    course.name = req.body.name;
+    course.description = req.body.description;
+    course.category = req.body.category;
+    course.slug = req.body.slug;
+
+    course.save();
+
+    res.status(200).redirect('/users/dashboard');
+  }catch (error){
+    res.status(400).json({
+      status:'fail',
+      error:error.message
+    });
+  };
+};
+
+export default {createCourse,getAllCourses,getCourse,enrollCourse,releaseCourse,deleteCourse,updateCourse};

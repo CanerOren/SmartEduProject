@@ -1,3 +1,4 @@
+// 9:58
 import methodOverride from 'method-override';
 import express from 'express';
 import mongoose from 'mongoose';
@@ -42,7 +43,7 @@ app.use((req,res,next)=>{
   next();
 });
 app.use(
-  methodOverride('_method ',{
+  methodOverride('_method',{
     methods:['POST','GET']
   })
 );
